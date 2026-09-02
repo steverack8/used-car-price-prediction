@@ -1,0 +1,34 @@
+# ── Python ──────────────────────────────────────────────────────
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# ── Virtual Environment ─────────────────────────────────────────
+venv/
+.venv/
+env/
+
+# ── IDE ─────────────────────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# ── OS ──────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+*:Zone.Identifier
+
+# ── Streamlit ───────────────────────────────────────────────────
+.streamlit/secrets.toml
+
+# ── Model Artifacts (terlalu besar untuk git) ───────────────────
+models/*.pkl
+
+# ── Jupyter Checkpoints ─────────────────────────────────────────
+.ipynb_checkpoints/
