@@ -163,9 +163,18 @@ with tab_predict:
             st.error("Jarak Tempuh harus berupa angka positif (contoh: 50.000).")
             st.stop()
 
+        mileage_km = int(mileage_clean)
+
+        # Range data training (dalam km)
+        TRAIN_MIN_MILEAGE_KM = 1_065   # 1.065 ribu km
+        TRAIN_MAX_MILEAGE_KM = 245_000 # 245 ribu km
+
+        # Clamping ke batas training (tanpa notifikasi)
+        mileage_clamped = min(max(mileage_km, TRAIN_MIN_MILEAGE_KM), TRAIN_MAX_MILEAGE_KM)
+
         # Dataset menyimpan mileage dalam ribuan km,
         # jadi input user (dalam km) dibagi 1000.
-        mileage_model = int(mileage_clean) / 1000
+        mileage_model = mileage_clamped / 1000
 
         raw_inputs = {
             "car name": car_name, "brand": brand,
