@@ -72,6 +72,23 @@ st.markdown("""
     [data-testid="stVerticalBlockBorderWrapper"] [data-testid="stVerticalBlock"] {
         gap: 0.3rem;
     }
+    /* Perbaiki visibilitas label input */
+    label[data-testid="stWidgetLabel"] {
+        color: #212529 !important;
+        font-weight: 500 !important;
+    }
+    /* Text input & selectbox styling */
+    .stTextInput > div > div > input,
+    .stSelectbox > div > div {
+        background-color: #ffffff !important;
+        border: 1px solid #ced4da !important;
+        border-radius: 8px !important;
+    }
+    .stTextInput > div > div > input:focus,
+    .stSelectbox > div > div:focus-within {
+        border-color: #4A90D9 !important;
+        box-shadow: 0 0 0 3px rgba(74, 144, 217, 0.15) !important;
+    }
 </style>
 """, unsafe_allow_html=True)
 
