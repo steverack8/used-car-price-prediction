@@ -112,6 +112,7 @@ df, X, y = _load_data()
 
 # -- Header -----------------------------------------------------------
 st.title("Prediksi Harga Beli Mobil Bekas Indonesia")
+st.markdown("<div style='height: 20px;'></div>", unsafe_allow_html=True)
 
 # -- Tabs -------------------------------------------------------------
 tab_predict, tab_data, tab_model = st.tabs(["Prediksi", "Data Overview", "Informasi Model"])
@@ -126,7 +127,7 @@ with tab_predict:
 
         c1, c2 = st.columns(2)
         with c1:
-            car_name = st.selectbox("Nama Mobil", CAR_NAMES, index=CAR_NAMES.index(CAR_NAME_DEFAULT))
+            car_name = st.selectbox("Jenis Mobil", CAR_NAMES, index=CAR_NAMES.index(CAR_NAME_DEFAULT))
         with c2:
             brand = CAR_NAME_TO_BRAND.get(car_name, "Unknown")
             st.text_input("Merek", value=brand, disabled=True)
@@ -142,8 +143,15 @@ with tab_predict:
             transmission = st.selectbox("Transmisi", TRANSMISSIONS,
                                         index=TRANSMISSIONS.index(TRANSMISSION_DEFAULT))
         with c6:
-            plate_type = st.selectbox("Plat Nomor", PLATE_TYPES,
-                                      index=PLATE_TYPES.index(PLATE_TYPE_DEFAULT))
+            plate_type = st.selectbox(
+                "Plat Nomor",
+                PLATE_TYPES,
+                index=PLATE_TYPES.index(PLATE_TYPE_DEFAULT),
+                format_func=lambda x: {
+                    "odd plate": "Ganjil",
+                    "even plate": "Genap",
+                }.get(x, x),
+            )
 
         # Text input dengan auto-format pemisah ribuan
         if "mileage_str" not in st.session_state:
@@ -163,7 +171,9 @@ with tab_predict:
             on_change=_format_mileage,
         )
 
+    st.markdown("<div style='height: 20px;'></div>", unsafe_allow_html=True)
     st.subheader("Fitur Tambahan")
+    st.markdown("<div style='height: 20px;'></div>", unsafe_allow_html=True)
     binary_values: dict[str, bool] = {}
     cols = st.columns(3)
     for idx, (feat, label) in enumerate(BINARY_FEATURES_UI.items()):
@@ -173,6 +183,7 @@ with tab_predict:
 
     st.markdown("")
 
+    st.markdown("<div style='height: 40px;'></div>", unsafe_allow_html=True)
     if st.button("Prediksi Harga", type="primary", use_container_width=True):
         # Validasi mileage harus angka
         mileage_clean = mileage_text.replace(",", "").strip()
@@ -215,7 +226,7 @@ with tab_predict:
 with tab_data:
 
     k1, k2, k3, k4 = st.columns(4)
-    k1.metric("Total Data", f"{len(df):,} baris")
+    k1.metric("Total Data", f"{len(df):,}")
     k2.metric("Rata-rata Harga", f"{CURRENCY_LABEL} {y.mean():,.0f}")
     k3.metric("Minimum", f"{CURRENCY_LABEL} {y.min():,.0f}")
     k4.metric("Maksimum", f"{CURRENCY_LABEL} {y.max():,.0f}")
@@ -243,5 +254,7 @@ with tab_data:
 # TAB 3 : INFO MODEL
 # =====================================================================
 with tab_model:
-    st.caption("Algoritma: Linear Regression")
-    st.caption(f"Fitur: {MODEL_INFO['num_features']} | MAE: {MODEL_INFO['metrics']['MAE']} | R²: {MODEL_INFO['metrics']['R²']}")
+    st.caption("Algoritma Linear Regression")
+    st.caption(f" R²: {MODEL_INFO['metrics']['R²']}")
+
+    # st.caption(f"Fitur: {MODEL_INFO['num_features']} | MAE: {MODEL_INFO['metrics']['MAE']} | R²: {MODEL_INFO['metrics']['R²']}")

@@ -87,7 +87,7 @@ PLATE_TYPE_DEFAULT = _safe_first(PLATE_TYPES, "odd plate")
 # YEAR RANGE - from dataset
 # =====================================================================
 _year_min = int(_df_dataset["year"].min())
-_year_max = int(_df_dataset["year"].max())
+_year_max = 2026
 YEAR_MIN = _year_min
 YEAR_MAX = _year_max
 YEARS: list[int] = list(range(YEAR_MAX, YEAR_MIN - 1, -1))
