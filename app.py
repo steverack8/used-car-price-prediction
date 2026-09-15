@@ -173,7 +173,6 @@ with tab_predict:
 
     st.markdown("<div style='height: 20px;'></div>", unsafe_allow_html=True)
     st.subheader("Fitur Tambahan")
-    st.markdown("<div style='height: 20px;'></div>", unsafe_allow_html=True)
     binary_values: dict[str, bool] = {}
     cols = st.columns(3)
     for idx, (feat, label) in enumerate(BINARY_FEATURES_UI.items()):
@@ -183,7 +182,7 @@ with tab_predict:
 
     st.markdown("")
 
-    st.markdown("<div style='height: 40px;'></div>", unsafe_allow_html=True)
+    st.markdown("<div style='height: 20px;'></div>", unsafe_allow_html=True)
     if st.button("Prediksi Harga", type="primary", use_container_width=True):
         # Validasi mileage harus angka
         mileage_clean = mileage_text.replace(",", "").strip()
