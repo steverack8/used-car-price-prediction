@@ -99,12 +99,15 @@ YEAR_DEFAULT = int(YEAR_DEFAULT)
 
 # =====================================================================
 # MILEAGE RANGE - from dataset
+# Catatan: kolom "mileage (km)" di CSV memakai titik sebagai pemisah
+# ribuan (58.365 = 58.365 km), jadi nilainya sudah dalam satuan ribuan km.
 # =====================================================================
+_MILEAGE_TO_KM = 1000
 _mileage_max_raw = float(_df_dataset["mileage (km)"].max())
 _mileage_median = float(_df_dataset["mileage (km)"].median())
 MILEAGE_MIN = 0
-MILEAGE_MAX = int(_mileage_max_raw * 1.2)  # buffer 20% di atas max
-MILEAGE_DEFAULT = int(round(_mileage_median))
+MILEAGE_MAX = int(_mileage_max_raw * _MILEAGE_TO_KM * 1.2)  # buffer 20% di atas max
+MILEAGE_DEFAULT = int(round(_mileage_median * _MILEAGE_TO_KM))
 MILEAGE_STEP = 1
 
 # =====================================================================

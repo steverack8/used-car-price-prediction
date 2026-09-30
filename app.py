@@ -41,6 +41,15 @@ st.markdown("""
         border-radius: 10px;
         padding: 12px 16px;
     }
+    /* Nilai prediksi di popup tidak boleh terpotong */
+    [data-testid="stModal"] [data-testid="stMetricValue"] {
+        white-space: normal !important;
+        word-break: break-word;
+        font-size: 2.4rem !important;
+    }
+    [data-testid="stModal"] [data-testid="stMetricLabel"] {
+        white-space: normal !important;
+    }
     .stButton > button[kind="primary"] {
         background-color: #4A90D9;
         color: white;
@@ -120,6 +129,22 @@ tab_predict, tab_data, tab_model = st.tabs(["Prediksi", "Data Overview", "Inform
 # =====================================================================
 # TAB 1 : PREDIKSI
 # =====================================================================
+@getattr(st, "dialog", st.experimental_dialog)("Hasil Prediksi", width="large")
+def show_result_dialog(price: float, inputs: dict):
+    st.metric(label="Estimasi Harga", value=f"{CURRENCY_LABEL} {price:,.0f}")
+
+    st.markdown("")
+    st.markdown("**Data Mobil**")
+    with st.container(border=True):
+        for label, value in inputs.items():
+            i1, i2 = st.columns([1, 1])
+            i1.markdown(f"**{label}**")
+            i2.markdown(str(value))
+
+    st.markdown("")
+    if st.button("Tutup", type="primary", use_container_width=True):
+        st.rerun()
+
 with tab_predict:
 
     with st.container(border=True):
@@ -214,10 +239,19 @@ with tab_predict:
         input_df = build_input_dataframe(raw_inputs)
         price = predict_price(input_df, model, preprocessor)
 
-        st.markdown("---")
-        res1, res2, res3 = st.columns(3)
-        with res2:
-            st.metric(label="Estimasi Harga", value=f"{CURRENCY_LABEL} {price:,.0f}")
+        summary = {
+            "Jenis Mobil": car_name,
+            "Merek": brand,
+            "Tahun": year,
+            "Lokasi": location,
+            "Transmisi": transmission,
+            "Plat Nomor": {"odd plate": "Ganjil", "even plate": "Genap"}.get(plate_type, plate_type),
+            "Jarak Tempuh (km)": f"{mileage_km:,}",
+        }
+        summary.update({label: ("Ya" if binary_values[k] else "Tidak")
+                        for k, label in BINARY_FEATURES_UI.items()})
+
+        show_result_dialog(price, summary)
 
 # =====================================================================
 # TAB 2 : DATA OVERVIEW
